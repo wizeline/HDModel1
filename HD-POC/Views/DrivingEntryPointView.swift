@@ -6,31 +6,65 @@
 //
 
 import SwiftUI
+import MapKit
 
 public struct DrivingEntryPointView: View {
     @State private var selectedModal: ModalType?
     @State private var timelineScrollOffset: CGFloat = 0
+    @State private var showingSafetyDialog = false
+    
+    // Add these properties for the header
+    private let username = "John"
+    private let score = 2850
+    private let rank = "Road Master"
+    private let encouragingPhrases = [
+        "Keep up the safe riding! 🏍",
+        "You're becoming a safety pro! 🌟",
+        "Your riding skills are impressive! 💫",
+        "Making the roads safer, one ride at a time! 🛣",
+        "Your dedication to safety shows! 🎯"
+    ]
     
     public var body: some View {
         ZStack {
-            // Main Timeline View
-            TimelineScrollView()
+            VStack(spacing: 0) {
+                // User Header
+                UserHeaderView(
+                    username: username,
+                    score: score,
+                    rank: rank,
+                    phrase: encouragingPhrases.randomElement() ?? ""
+                )
+                .padding(.horizontal)
+                .padding(.top, 16)
+                
+                // Main Timeline View
+                TimelineScrollView()
+            }
             
-            // Navigation Overlay
+            // Safety Button (top right)
             VStack {
+                HStack {
+                    Spacer()
+                    FloatingSafetyButton(showingSafetyDialog: $showingSafetyDialog)
+                        .padding(.top, 8)
+                        .padding(.trailing, 16)
+                }
                 Spacer()
+                
                 NavigationBar(selectedModal: $selectedModal)
             }
         }
         .sheet(item: $selectedModal) { modalType in
             switch modalType {
-            case .safetyAssistant:
-                SafetyAssistantView()
             case .lastRideDetails:
                 LastRideDetailsView()
             case .rideRewards:
                 RideRewardsView()
             }
+        }
+        .sheet(isPresented: $showingSafetyDialog) {
+            SafetyDialogView()
         }
     }
 }
@@ -282,7 +316,7 @@ private struct EventIcon: View {
         case "Lane Weaving": return "arrow.left.and.right"
         case "Late Night Risk": return "moon.fill"
         case "Swerving Event": return "arrow.up.and.down"
-        case "Missing Signals": return "arrow.right.slash"
+        case "Missing Signals": return "hold.brakesignal"
         case "Safety Gear Alert": return "person.crop.circle.badge.exclamationmark"
         case "Cold Engine Risk": return "thermometer.snowflake"
         default: return "exclamationmark.triangle.fill"
@@ -443,14 +477,6 @@ private struct NavigationBar: View {
     var body: some View {
         HStack(spacing: 20) {
             NavigationButton(
-                icon: "shield.fill",
-                title: "Safety",
-                color: .black
-            ) {
-                selectedModal = .safetyAssistant
-            }
-            
-            NavigationButton(
                 icon: "clock.fill",
                 title: "Last Ride",
                 color: .black
@@ -503,7 +529,6 @@ private struct NavigationButton: View {
 
 // MARK: - Supporting Types
 private enum ModalType: Identifiable {
-    case safetyAssistant
     case lastRideDetails
     case rideRewards
     
@@ -511,21 +536,890 @@ private enum ModalType: Identifiable {
 }
 
 // MARK: - Modal Views (Placeholder)
-private struct SafetyAssistantView: View {
+private struct LastRideDetailsView: View {
+    @State private var animateCharts = false
+    @State private var showStats = false
+    @State private var showAnalysis = false
+    @State private var showAchievements = false
+    @State private var selectedMetric: SafetyMetric?
+    @State private var isSpinning = false
+    
+    private let metrics = [
+        SafetyMetric(name: "Braking", score: 0.9, icon: "hand.raised.fill"),
+        SafetyMetric(name: "Cornering", score: 0.75, icon: "arrow.turn.right.up"),
+        SafetyMetric(name: "Speed", score: 0.85, icon: "gauge.medium"),
+        SafetyMetric(name: "Signals", score: 0.95, icon: "arrow.right"),
+        SafetyMetric(name: "Position", score: 0.8, icon: "arrow.left.and.right")
+    ]
+    
     var body: some View {
-        Text("Safety Assistant")
+        ZStack {
+            ScrollView {
+                VStack(spacing: 24) {
+                    Color.clear.frame(height: 30) // Changed from 60 to 30
+                    
+                    // Animated Score Ring
+                    ZStack {
+                        Circle()
+                            .stroke(Color.black.opacity(0.1), lineWidth: 20)
+                        
+                        Circle()
+                            .trim(from: 0, to: animateCharts ? 0.85 : 0)
+                            .stroke(
+                                AngularGradient(
+                                    colors: [.orange, .orange.opacity(0.5)],
+                                    center: .center,
+                                    startAngle: .degrees(0),
+                                    endAngle: .degrees(360)
+                                ),
+                                style: StrokeStyle(lineWidth: 20, lineCap: .round)
+                            )
+                            .rotationEffect(.degrees(-90))
+                        
+                        VStack(spacing: 4) {
+                            Text("85")
+                                .font(.system(size: 48, weight: .bold))
+                            Text("Safety Score")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        // Animated achievement stars
+                        ForEach(0..<3) { index in
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.orange)
+                                .offset(
+                                    x: animateCharts ? 60 * cos(Double(index) * 2 * .pi / 3) : 0,
+                                    y: animateCharts ? 60 * sin(Double(index) * 2 * .pi / 3) : 0
+                                )
+                                .scaleEffect(animateCharts ? 1 : 0)
+                                .opacity(animateCharts ? 1 : 0)
+                        }
+                    }
+                    .frame(height: 200)
+                    .padding(.top)
+                    
+                    // Ride Statistics with animated icons
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                        ForEach(metrics) { metric in
+                            MetricCard(metric: metric, isSelected: selectedMetric?.id == metric.id)
+                                .onTapGesture {
+                                    withAnimation(.spring()) {
+                                        selectedMetric = selectedMetric?.id == metric.id ? nil : metric
+                                    }
+                                }
+                                .scaleEffect(showStats ? 1 : 0.8)
+                                .opacity(showStats ? 1 : 0)
+                        }
+                    }
+                    .padding(.horizontal)
+                    
+                    // Ride Route Map
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("RIDE ROUTE")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        
+                        RideMapView()
+                            .frame(height: 200)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .shadow(radius: 2)
+                    }
+                    .padding(.horizontal)
+                    
+                    if showAchievements {
+                        RideAchievementsView()
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
+            }
+            
+            CloseButton()
+        }
+        .onAppear {
+            withAnimation(.easeOut(duration: 1.5)) {
+                animateCharts = true
+            }
+            
+            withAnimation(.spring().delay(0.3)) {
+                showStats = true
+            }
+            
+            withAnimation(.easeOut.delay(0.6)) {
+                showAnalysis = true
+            }
+            
+            withAnimation(.spring().delay(0.9)) {
+                showAchievements = true
+            }
+        }
     }
 }
 
-private struct LastRideDetailsView: View {
+private struct SafetyMetric: Identifiable {
+    let id = UUID()
+    let name: String
+    let score: Double
+    let icon: String
+}
+
+private struct MetricCard: View {
+    let metric: SafetyMetric
+    let isSelected: Bool
+    @State private var isPulsing = false
+    
     var body: some View {
-        Text("Last Ride Details")
+        VStack(spacing: 12) {
+            ZStack {
+                Circle()
+                    .fill(Color.orange.opacity(0.1))
+                    .frame(width: 50, height: 50)
+                    .scaleEffect(isPulsing ? 1.2 : 1.0)
+                    .opacity(isPulsing ? 0.5 : 1.0)
+                
+                Image(systemName: metric.icon)
+                    .font(.title2)
+                    .foregroundColor(.orange)
+            }
+            .onAppear {
+                withAnimation(
+                    .easeInOut(duration: 1.5)
+                    .repeatForever(autoreverses: true)
+                ) {
+                    isPulsing = true
+                }
+            }
+            
+            Text(metric.name)
+                .font(.subheadline.bold())
+            
+            Text("\(Int(metric.score * 100))")
+                .font(.title.bold())
+                .foregroundColor(.orange)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black.opacity(isSelected ? 0.05 : 0.02))
+        )
+        .scaleEffect(isSelected ? 1.05 : 1)
+        .animation(.spring(), value: isSelected)
+    }
+}
+
+private struct RideMapView: View {
+    // HD Headquarters coordinates
+    @State private var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(
+            latitude: 43.0411,  // Milwaukee HD HQ coordinates
+            longitude: -87.9677
+        ),
+        span: MKCoordinateSpan(
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01
+        )
+    )
+    
+    @State private var isPulsing = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("RIDE LOCATION")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            ZStack {
+                Map(coordinateRegion: $region)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                
+                // Custom motorcycle marker
+                ZStack {
+                    Circle()
+                        .fill(Color.orange.opacity(0.2))
+                        .frame(width: 40, height: 40)
+                        .scaleEffect(isPulsing ? 1.3 : 1.0)
+                        .opacity(isPulsing ? 0.5 : 1.0)
+                    
+                    Image(systemName: "motorcycle.circle.fill")
+                        .font(.system(size: 24))
+                        .foregroundColor(.orange)
+                }
+                .onAppear {
+                    withAnimation(
+                        .easeInOut(duration: 1.5)
+                        .repeatForever(autoreverses: true)
+                    ) {
+                        isPulsing = true
+                    }
+                }
+            }
+            .frame(height: 200)
+            
+            // Location details
+            HStack {
+                Image(systemName: "location.fill")
+                    .foregroundColor(.orange)
+                    .font(.caption)
+                Text("Harley-Davidson HQ • Milwaukee, WI")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.horizontal)
+    }
+}
+
+private struct RideAchievementsView: View {
+    @State private var selectedAchievement: Int?
+    
+    let achievements = [
+        ("Smooth Operator", "No sudden movements for 15 minutes", "checkmark.circle.fill"),
+        ("Signal Master", "Used all turn signals correctly", "arrow.right"),
+        ("Speed Demon", "Maintained legal speed limits", "gauge.medium")
+    ]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("ACHIEVEMENTS")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            ForEach(Array(achievements.enumerated()), id: \.offset) { index, achievement in
+                AchievementRow(
+                    title: achievement.0,
+                    description: achievement.1,
+                    icon: achievement.2,
+                    isSelected: selectedAchievement == index
+                )
+                .onTapGesture {
+                    withAnimation(.spring()) {
+                        selectedAchievement = selectedAchievement == index ? nil : index
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
+    }
+}
+
+private struct AchievementRow: View {
+    let title: String
+    let description: String
+    let icon: String
+    let isSelected: Bool
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(.orange)
+                .frame(width: 40)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.headline)
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right")
+                .foregroundColor(.secondary)
+                .rotationEffect(.degrees(isSelected ? 90 : 0))
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black.opacity(0.05))
+        )
+        .scaleEffect(isSelected ? 1.02 : 1)
     }
 }
 
 private struct RideRewardsView: View {
+    @State private var showContent = false
+    @State private var selectedPerk: Int?
+    @State private var isPulsing = false
+    
     var body: some View {
-        Text("Ride Rewards")
+        ZStack {
+            ScrollView {
+                VStack(spacing: 24) {
+                    Color.clear.frame(height: 30) // Changed from 60 to 30
+                    
+                    // Tier Status with animated crown
+                    TierStatusView(
+                        currentTier: "Gold Rider",
+                        points: 2850,
+                        nextTierPoints: 3000
+                    )
+                    .scaleEffect(showContent ? 1 : 0.8)
+                    .opacity(showContent ? 1 : 0)
+                    
+                    // Animated perks grid
+                    PerksGridView(tier: "Gold Rider")
+                        .offset(y: showContent ? 0 : 50)
+                        .opacity(showContent ? 1 : 0)
+                    
+                    // Points breakdown with counting animation
+                    PointsBreakdownView(safetyScore: 85)
+                        .offset(y: showContent ? 0 : 50)
+                        .opacity(showContent ? 1 : 0)
+                    
+                    // Upcoming rewards with progress animations
+                    UpcomingRewardsView()
+                        .offset(y: showContent ? 0 : 50)
+                        .opacity(showContent ? 1 : 0)
+                    
+                    // Challenges with time-based animations
+                    ChallengesView()
+                        .offset(y: showContent ? 0 : 50)
+                        .opacity(showContent ? 1 : 0)
+                }
+                .padding()
+            }
+            
+            CloseButton()
+        }
+        .onAppear {
+            withAnimation(.spring(duration: 0.7)) {
+                showContent = true
+            }
+        }
+    }
+}
+
+private struct TierStatusView: View {
+    let currentTier: String
+    let points: Int
+    let nextTierPoints: Int
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Current Tier Badge
+            ZStack {
+                Circle()
+                    .fill(Color.orange)
+                    .frame(width: 80, height: 80)
+                
+                Image(systemName: "crown.fill")
+                    .font(.system(size: 36))
+                    .foregroundColor(.white)
+            }
+            
+            Text(currentTier)
+                .font(.title2.bold())
+            
+            // Progress to next tier
+            VStack(spacing: 8) {
+                Text("\(nextTierPoints - points) points to next tier")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .fill(Color.black.opacity(0.1))
+                        
+                        Rectangle()
+                            .fill(Color.orange)
+                            .frame(width: geometry.size.width * (CGFloat(points) / CGFloat(nextTierPoints)))
+                    }
+                }
+                .frame(height: 8)
+                .clipShape(Capsule())
+            }
+        }
+        .padding()
+        .background(Color.black.opacity(0.05))
+    }
+}
+
+private struct PerksGridView: View {
+    let tier: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("CURRENT PERKS")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            LazyVGrid(columns: [
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ], spacing: 16) {
+                PerkCard(
+                    icon: "ticket.fill",
+                    title: "HD Events Access",
+                    description: "Exclusive access to HD riding events"
+                )
+                
+                PerkCard(
+                    icon: "wrench.fill",
+                    title: "Priority Service",
+                    description: "Skip the line at HD service centers"
+                )
+                
+                PerkCard(
+                    icon: "percent",
+                    title: "Parts Discount",
+                    description: "15% off on genuine HD parts"
+                )
+                
+                PerkCard(
+                    icon: "person.2.fill",
+                    title: "Community Status",
+                    description: "Special badge in HD community"
+                )
+            }
+        }
+    }
+}
+
+private struct PerkCard: View {
+    let icon: String
+    let title: String
+    let description: String
+    @State private var isPulsing = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(.orange)
+                .scaleEffect(isPulsing ? 1.2 : 1.0)
+                .opacity(isPulsing ? 0.7 : 1.0)
+                .onAppear {
+                    withAnimation(
+                        .easeInOut(duration: 1.5)
+                        .repeatForever(autoreverses: true)
+                    ) {
+                        isPulsing = true
+                    }
+                }
+            
+            Text(title)
+                .font(.headline)
+            
+            Text(description)
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.black.opacity(0.05))
+    }
+}
+
+private struct PointsBreakdownView: View {
+    let safetyScore: Int
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("POINTS BREAKDOWN")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            VStack(spacing: 12) {
+                PointsRow(
+                    title: "Safe Riding Bonus",
+                    points: "+500",
+                    description: "Maintained 85+ safety score"
+                )
+                
+                PointsRow(
+                    title: "Achievement Rewards",
+                    points: "+750",
+                    description: "Completed 3 achievements"
+                )
+                
+                PointsRow(
+                    title: "Streak Bonus",
+                    points: "+300",
+                    description: "7 days perfect riding"
+                )
+            }
+        }
+    }
+}
+
+private struct PointsRow: View {
+    let title: String
+    let points: String
+    let description: String
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.subheadline.bold())
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Text(points)
+                .font(.headline)
+                .foregroundColor(.orange)
+        }
+        .padding()
+        .background(Color.black.opacity(0.05))
+    }
+}
+
+private struct UpcomingRewardsView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("UPCOMING REWARDS")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            VStack(spacing: 12) {
+                RewardCard(
+                    icon: "gift.fill",
+                    title: "HD Leather Jacket",
+                    points: "5000",
+                    progress: 0.57
+                )
+                
+                RewardCard(
+                    icon: "ticket.fill",
+                    title: "HD Rally Pass",
+                    points: "3500",
+                    progress: 0.81
+                )
+                
+                RewardCard(
+                    icon: "star.fill",
+                    title: "Premium Status",
+                    points: "10000",
+                    progress: 0.28
+                )
+            }
+        }
+    }
+}
+
+private struct RewardCard: View {
+    let icon: String
+    let title: String
+    let points: String
+    let progress: Double
+    @State private var showProgress = false
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(.orange)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(title)
+                    .font(.headline)
+                
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .fill(Color.black.opacity(0.1))
+                        
+                        Rectangle()
+                            .fill(Color.orange)
+                            .frame(width: geometry.size.width * (showProgress ? progress : 0))
+                    }
+                }
+                .frame(height: 4)
+                .onAppear {
+                    withAnimation(.spring(duration: 1.0)) {
+                        showProgress = true
+                    }
+                }
+            }
+            
+            Text("\(points)p")
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .background(Color.black.opacity(0.05))
+    }
+}
+
+private struct ChallengesView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("LIMITED TIME CHALLENGES")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            VStack(spacing: 12) {
+                ChallengeCard(
+                    title: "Weekend Warrior",
+                    description: "Complete 5 safe rides this weekend",
+                    reward: "500",
+                    timeLeft: "2 days"
+                )
+                
+                ChallengeCard(
+                    title: "Night Rider",
+                    description: "3 perfect night rides",
+                    reward: "750",
+                    timeLeft: "5 days"
+                )
+                
+                ChallengeCard(
+                    title: "Group Ride Champion",
+                    description: "Join 2 group rides",
+                    reward: "1000",
+                    timeLeft: "1 week"
+                )
+            }
+        }
+    }
+}
+
+private struct ChallengeCard: View {
+    let title: String
+    let description: String
+    let reward: String
+    let timeLeft: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text(title)
+                    .font(.headline)
+                
+                Spacer()
+                
+                Text("+\(reward)p")
+                    .font(.subheadline.bold())
+                    .foregroundColor(.orange)
+            }
+            
+            Text(description)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            HStack {
+                Image(systemName: "clock.fill")
+                    .font(.caption)
+                Text(timeLeft)
+                    .font(.caption)
+            }
+            .foregroundColor(.secondary)
+        }
+        .padding()
+        .background(Color.black.opacity(0.05))
+    }
+}
+
+private struct FloatingSafetyButton: View {
+    @Binding var showingSafetyDialog: Bool
+    
+    var body: some View {
+        Button(action: {
+            showingSafetyDialog = true
+        }) {
+            HStack(spacing: 6) {
+                Image(systemName: "exclamationmark.shield.fill")
+                    .font(.system(size: 16))
+                Text("SAFETY")
+                    .font(.caption.bold())
+            }
+            .foregroundColor(.white)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                Capsule()
+                    .fill(Color.black.opacity(0.8))
+                    .shadow(radius: 2)
+            )
+        }
+    }
+}
+
+private struct SafetyDialogView: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var currentMessageIndex = 0
+    @State private var isAnimating = false
+    
+    let conversation: [(speaker: String, message: String)] = [
+        ("You", "Hey HD, I need to contact insurance assistance."),
+        ("HD", "I'll connect you with our insurance service right away."),
+        ("HD", "Connecting to HD Insurance Services..."),
+        ("Agent", "Hello, this is Sarah from HD Insurance. How can I help you today?"),
+        ("You", "Hi, I've had a minor incident with my bike."),
+        ("Agent", "I understand. First, could you confirm your full name?"),
+        ("You", "John Smith"),
+        ("Agent", "Thank you, John. Could you provide your insurance policy number?"),
+        ("You", "Yes, it's HD-2024-789456"),
+        ("Agent", "Perfect, I've located your policy. Are you in a safe location?"),
+        ("You", "Yes, I'm safely off the road."),
+        ("Agent", "Good. I can see your location. Do you need roadside assistance?"),
+        ("You", "Yes, please."),
+        ("Agent", "I'm dispatching a tow service to your location. ETA 20 minutes."),
+        ("Agent", "Would you like me to arrange a replacement vehicle?"),
+        ("You", "No thanks, I have alternative transportation."),
+        ("Agent", "Alright. You'll receive an SMS with the tow service details."),
+        ("HD", "I've saved this incident report to your account.")
+    ]
+    
+    var body: some View {
+        ZStack {
+            VStack(spacing: 24) {
+                Color.clear.frame(height: 30) // Changed from 60 to 30
+                
+                // Voice wave animation
+                WaveformView(isAnimating: $isAnimating)
+                    .frame(height: 60)
+                
+                // Conversation
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            ForEach(0...currentMessageIndex, id: \.self) { index in
+                                MessageBubble(
+                                    message: conversation[index].message,
+                                    isHD: conversation[index].speaker == "HD" || conversation[index].speaker == "Agent"
+                                )
+                            }
+                        }
+                        .padding()
+                    }
+                    .onChange(of: currentMessageIndex) { _ in
+                        withAnimation {
+                            proxy.scrollTo(currentMessageIndex)
+                        }
+                    }
+                }
+                
+                Spacer()
+            }
+            
+            CloseButton()
+        }
+        .onAppear {
+            isAnimating = true
+            animateConversation()
+        }
+    }
+    
+    private func animateConversation() {
+        guard currentMessageIndex < conversation.count - 1 else { return }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            currentMessageIndex += 1
+            animateConversation()
+        }
+    }
+}
+
+private struct WaveformView: View {
+    @Binding var isAnimating: Bool
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(0..<10) { index in
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(Color.orange)
+                    .frame(width: 3)
+                    .frame(height: isAnimating ? heights[index] : 10)
+                    .animation(
+                        Animation.easeInOut(duration: 0.5)
+                            .repeatForever()
+                            .delay(Double(index) * 0.1),
+                        value: isAnimating
+                    )
+            }
+        }
+    }
+    
+    private let heights: [CGFloat] = [20, 40, 30, 50, 25, 45, 35, 40, 30, 20]
+}
+
+private struct MessageBubble: View {
+    let message: String
+    let isHD: Bool
+    
+    var body: some View {
+        HStack {
+            if isHD { Spacer() }
+            
+            Text(message)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(isHD ? Color.black.opacity(0.05) : Color.orange)
+                )
+                .foregroundColor(isHD ? .primary : .white)
+            
+            if !isHD { Spacer() }
+        }
+    }
+}
+
+private struct UserHeaderView: View {
+    let username: String
+    let score: Int
+    let rank: String
+    let phrase: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // Greeting and Score
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Hello, \(username)!")
+                        .font(.title2.bold())
+                    
+                    HStack(spacing: 4) {
+                        Text(rank)
+                            .font(.subheadline.bold())
+                        Text("•")
+                            .foregroundColor(.secondary)
+                        Text("\(score) pts")
+                            .font(.subheadline)
+                            .foregroundColor(.orange)
+                    }
+                }
+                Spacer()
+            }
+            
+            // Encouraging Phrase
+            Text(phrase)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            Divider()
+                .padding(.top, 8)
+        }
+        .padding(.bottom, 8)
+    }
+}
+
+// First, let's create a reusable close button
+private struct CloseButton: View {
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+            }
+            .padding()
+            
+            Spacer()
+        }
     }
 }
 
