@@ -1,10 +1,3 @@
-//
-//  NavigationRouter.swift
-//  HD-POC
-//
-//  Created by Kelderth Krom on 17/02/25.
-//
-
 import SwiftUI
 
 final class NavigationRouter: ObservableObject {

@@ -1,10 +1,3 @@
-//
-//  Intents.swift
-//  HD-POC
-//
-//  Created by Kelderth Krom on 17/02/25.
-//
-
 import AppIntents
 
 struct SpeechAppShortcutProvider: AppShortcutsProvider {
@@ -74,7 +67,7 @@ struct OpenFaqIntent: AppIntent {
     static var openAppWhenRun: Bool = true
     
     func perform() async throws -> some IntentResult {
-        NavigationRouter.shared.isFaqVisible.toggle()
+        NavigationRouter.shared.isFaqVisible = true
         
         return .result()
     }

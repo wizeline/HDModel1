@@ -1,22 +1,16 @@
-//
-//  MoreItemView.swift
-//  HD-POC
-//
-//  Created by Kelderth Krom on 15/02/25.
-//
-
 import SwiftUI
 
 struct MoreItemView: View {
     let item: MoreContentItem
     @State var isFaqModalVisible = false
+    @StateObject var router = NavigationRouter.shared
     
     var body: some View {
         VStack {
             Button {
                 item.event?()
                 if item.title == "my performance" {
-                    isFaqModalVisible.toggle()
+                    router.isFaqVisible = true
                 }
             } label: {
                 HStack(alignment: .center, spacing: 20) {
@@ -31,7 +25,7 @@ struct MoreItemView: View {
                 .font(.title3)
             }
             .buttonStyle(NoHighlightButtonStyle())
-            .sheet(isPresented: $isFaqModalVisible) {
+            .sheet(isPresented: $router.isFaqVisible) {
                 FaqView()
             }
             Rectangle()

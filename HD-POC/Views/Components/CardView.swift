@@ -1,10 +1,3 @@
-//
-//  CardView.swift
-//  HD-POC
-//
-//  Created by Kelderth Krom on 15/02/25.
-//
-
 import SwiftUI
 
 struct CardView: View {

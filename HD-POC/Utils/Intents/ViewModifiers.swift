@@ -1,10 +1,3 @@
-//
-//  ViewModifiers.swift
-//  HD-POC
-//
-//  Created by Kelderth Krom on 17/02/25.
-//
-
 import SwiftUI
 
 struct NavigatableView: ViewModifier {

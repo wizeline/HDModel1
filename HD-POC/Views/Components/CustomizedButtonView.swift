@@ -1,23 +1,15 @@
-//
-//  CustomizedButtonView.swift
-//  HD-POC
-//
-//  Created by Kelderth Krom on 15/02/25.
-//
-
 import SwiftUI
 
 struct CustomizedButtonView: View {
     let title: String
     let action: () -> Void
     @StateObject var router = NavigationRouter.shared
-    @State var isFaqModalVisible: Bool = false
     
     var body: some View {
         Button {
             action()
             if title == "my performance" {
-                isFaqModalVisible.toggle()
+                router.isFaqVisible = true
             }
         } label: {
             HStack {
