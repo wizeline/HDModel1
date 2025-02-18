@@ -3,12 +3,14 @@ import AppIntents
 
 enum Tab: String, AppEnum {
     case home
+    case driving
     case profile
     case more
     
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Tab"
     static var caseDisplayRepresentations: [Tab : DisplayRepresentation] = [
         .home : .init(stringLiteral: "Home"),
+        .driving: .init(stringLiteral: "Driving"),
         .profile : .init(stringLiteral: "Profile"),
         .more : .init(stringLiteral: "More")
     ]

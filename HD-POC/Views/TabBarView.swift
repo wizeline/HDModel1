@@ -11,11 +11,19 @@ struct TabBarView: View {
                         Label("Home", systemImage: "house")
                     }
                     .tag(Tab.home)
+
+                DrivingEntryPointView()
+                    .tabItem {
+                        Label("Driving", systemImage: "motorcycle")
+                    }
+                    .tag(Tab.driving)
+
                 ProfileEntryPointView()
                     .tabItem {
                         Label("Profile", systemImage: "helmet")
                     }
                     .tag(Tab.profile)
+
                 MoreEntryPointView()
                     .tabItem {
                         Label("More", systemImage: "ellipsis")
