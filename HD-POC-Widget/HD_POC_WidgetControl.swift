@@ -10,7 +10,7 @@ import SwiftUI
 import WidgetKit
 
 struct HD_POC_WidgetControl: ControlWidget {
-    static let kind: String = "com.Kelderth.HD-POC.HD-POC-Widget"
+    static let kind: String = "com.Kelderth.HD-POC.HD-POC-Widget2"
 
     var body: some ControlWidgetConfiguration {
         AppIntentControlConfiguration(
