@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TabBarView: View {
     @StateObject var router = NavigationRouter.shared
+    @State private var showingSafetyAssistant = false
     
     var body: some View {
         TabView(selection: $router.selectedTab) {
@@ -34,6 +35,12 @@ struct TabBarView: View {
             .toolbarBackground(.accent, for: .tabBar)
         }
         .tint(.orange)
+        .sheet(isPresented: $showingSafetyAssistant) {
+            SafetyDialogView()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("ShowSafetyAssistant"))) { _ in
+            showingSafetyAssistant = true
+        }
     }
 }
 
