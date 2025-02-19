@@ -7,15 +7,52 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A71BDC0C2D65837800153C5A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71BDC0B2D65837800153C5A /* WidgetKit.framework */; };
+		A71BDC0E2D65837800153C5A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A71BDC0D2D65837800153C5A /* SwiftUI.framework */; };
+		A71BDC1F2D65837900153C5A /* HD-POC-WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A71BDC0A2D65837800153C5A /* HD-POC-WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B94A4C962D6387850053D56A /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B94A4C912D6386C50053D56A /* Intents.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A71BDC1D2D65837900153C5A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B9A0CDC82D60F80500C95121 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A71BDC092D65837800153C5A;
+			remoteInfo = "HD-POC-WidgetExtension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A71BDC202D65837900153C5A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A71BDC1F2D65837900153C5A /* HD-POC-WidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		A71BDC0A2D65837800153C5A /* HD-POC-WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "HD-POC-WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A71BDC0B2D65837800153C5A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		A71BDC0D2D65837800153C5A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B94A4C912D6386C50053D56A /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		B9A0CDD02D60F80500C95121 /* HD-POC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HD-POC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A71BDC242D65837900153C5A /* Exceptions for "HD-POC-Widget" folder in "HD-POC-WidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A71BDC092D65837800153C5A /* HD-POC-WidgetExtension */;
+		};
 		B94A4C7A2D6299D30053D56A /* Exceptions for "HD-POC" folder in "HD-POC" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -26,6 +63,14 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		A71BDC0F2D65837800153C5A /* HD-POC-Widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A71BDC242D65837900153C5A /* Exceptions for "HD-POC-Widget" folder in "HD-POC-WidgetExtension" target */,
+			);
+			path = "HD-POC-Widget";
+			sourceTree = "<group>";
+		};
 		B9A0CDD22D60F80500C95121 /* HD-POC */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -37,6 +82,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A71BDC072D65837800153C5A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A71BDC0E2D65837800153C5A /* SwiftUI.framework in Frameworks */,
+				A71BDC0C2D65837800153C5A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B9A0CDCD2D60F80500C95121 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -52,6 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				B94A4C912D6386C50053D56A /* Intents.framework */,
+				A71BDC0B2D65837800153C5A /* WidgetKit.framework */,
+				A71BDC0D2D65837800153C5A /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -60,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				B9A0CDD22D60F80500C95121 /* HD-POC */,
+				A71BDC0F2D65837800153C5A /* HD-POC-Widget */,
 				B94A4C902D6386C50053D56A /* Frameworks */,
 				B9A0CDD12D60F80500C95121 /* Products */,
 			);
@@ -69,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				B9A0CDD02D60F80500C95121 /* HD-POC.app */,
+				A71BDC0A2D65837800153C5A /* HD-POC-WidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +134,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A71BDC092D65837800153C5A /* HD-POC-WidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A71BDC232D65837900153C5A /* Build configuration list for PBXNativeTarget "HD-POC-WidgetExtension" */;
+			buildPhases = (
+				A71BDC062D65837800153C5A /* Sources */,
+				A71BDC072D65837800153C5A /* Frameworks */,
+				A71BDC082D65837800153C5A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A71BDC0F2D65837800153C5A /* HD-POC-Widget */,
+			);
+			name = "HD-POC-WidgetExtension";
+			packageProductDependencies = (
+			);
+			productName = "HD-POC-WidgetExtension";
+			productReference = A71BDC0A2D65837800153C5A /* HD-POC-WidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B9A0CDCF2D60F80500C95121 /* HD-POC */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B9A0CDDE2D60F80700C95121 /* Build configuration list for PBXNativeTarget "HD-POC" */;
@@ -83,10 +163,12 @@
 				B9A0CDCC2D60F80500C95121 /* Sources */,
 				B9A0CDCD2D60F80500C95121 /* Frameworks */,
 				B9A0CDCE2D60F80500C95121 /* Resources */,
+				A71BDC202D65837900153C5A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A71BDC1E2D65837900153C5A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B9A0CDD22D60F80500C95121 /* HD-POC */,
@@ -108,6 +190,9 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					A71BDC092D65837800153C5A = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					B9A0CDCF2D60F80500C95121 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -128,11 +213,19 @@
 			projectRoot = "";
 			targets = (
 				B9A0CDCF2D60F80500C95121 /* HD-POC */,
+				A71BDC092D65837800153C5A /* HD-POC-WidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A71BDC082D65837800153C5A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B9A0CDCE2D60F80500C95121 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -143,6 +236,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A71BDC062D65837800153C5A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B9A0CDCC2D60F80500C95121 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -152,7 +252,69 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		A71BDC1E2D65837900153C5A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A71BDC092D65837800153C5A /* HD-POC-WidgetExtension */;
+			targetProxy = A71BDC1D2D65837900153C5A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		A71BDC212D65837900153C5A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6G6VB68MDA;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HD-POC-Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "HD-POC-Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC.HD-POC-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A71BDC222D65837900153C5A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6G6VB68MDA;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HD-POC-Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "HD-POC-Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC.HD-POC-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B9A0CDDC2D60F80700C95121 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -277,10 +439,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HD-POC/Preview Content\"";
-				DEVELOPMENT_TEAM = 6G6VB68MDA;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HD-POC/Info.plist";
@@ -296,6 +458,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -307,10 +470,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HD-POC/Preview Content\"";
-				DEVELOPMENT_TEAM = 6G6VB68MDA;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HD-POC/Info.plist";
@@ -326,6 +489,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -335,6 +499,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A71BDC232D65837900153C5A /* Build configuration list for PBXNativeTarget "HD-POC-WidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A71BDC212D65837900153C5A /* Debug */,
+				A71BDC222D65837900153C5A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B9A0CDCB2D60F80500C95121 /* Build configuration list for PBXProject "HD-POC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
