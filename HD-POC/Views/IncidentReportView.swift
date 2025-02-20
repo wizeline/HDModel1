@@ -21,12 +21,7 @@ struct IncidentReportView: View {
         }
     }
     
-    let conversation: [(speaker: String, message: String)] = [
-        ("HD", "I'll help you report this incident. Are you in a safe location?"),
-        ("You", "Yes, I'm safe."),
-        ("HD", "Good. Please select the type of incident you'd like to report:"),
-        ("HD", "I'll guide you through the process and notify relevant services if needed.")
-    ]
+    let conversation: [(speaker: String, message: String)] = Constants.incidentConversation
     
     var body: some View {
         ZStack {

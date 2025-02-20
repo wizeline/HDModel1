@@ -1,10 +1,3 @@
-//
-//  HD_POC_WidgetLiveActivity.swift
-//  HD-POC-Widget
-//
-//  Created by Fabian Romero Sotelo on 18/02/25.
-//
-
 import ActivityKit
 import WidgetKit
 import SwiftUI

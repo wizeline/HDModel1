@@ -10,13 +10,12 @@ struct CardView: View {
     var animationDelay: Double = 0
     var parallaxDelay: Double = 3
     
-    // Example HD image from Unsplash
     static let defaultImageURL = "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800"
     
     var body: some View {
         VStack {
             ZStack {
-                // Container to constrain image size
+                // MARK: - Container to constrain image size
                 GeometryReader { geo in
                     AsyncImage(url: URL(string: imageURL)) { phase in
                         switch phase {
@@ -64,7 +63,7 @@ struct CardView: View {
                     .clipped()
                 }
                 
-                // Footer simple sin action
+                // MARK: - Footer simple without action
                 VStack {
                     Spacer()
                     HStack {
@@ -92,7 +91,6 @@ struct CardView: View {
     }
 }
 
-// Preview with example URL
 #Preview {
     CardView(
         imageURL: CardView.defaultImageURL,

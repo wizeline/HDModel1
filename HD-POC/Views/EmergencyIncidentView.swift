@@ -6,7 +6,7 @@ struct EmergencyIncidentView: View {
     @State private var showingEmergencyAlert = false
     @State private var timer: Timer?
     
-    // Animation states
+    // MARK: - Animation states
     @State private var isWarningAnimating = false
     @State private var isCountdownPulsing = false
     
@@ -14,7 +14,7 @@ struct EmergencyIncidentView: View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Warning Icon with scale animation only
+            // MARK: - Warning Icon with scale animation only
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 48))
                 .foregroundStyle(
@@ -27,7 +27,7 @@ struct EmergencyIncidentView: View {
                     value: isWarningAnimating
                 )
             
-            // Main message with fade in
+            // MARK: - Main message with fade in
             Text("Are you alright?")
                 .font(.title.bold())
                 .padding(.bottom, 4)
@@ -42,7 +42,7 @@ struct EmergencyIncidentView: View {
                 .opacity(isWarningAnimating ? 1 : 0)
                 .animation(.easeIn(duration: 0.5).delay(0.2), value: isWarningAnimating)
             
-            // Countdown with pulse animation
+            // MARK: - Countdown with pulse animation
             Text("\(countdown)")
                 .font(.system(size: 72, weight: .bold))
                 .foregroundStyle(Color.orange.gradient)
@@ -58,7 +58,7 @@ struct EmergencyIncidentView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             
-            // Exit button with hover effect
+            // MARK: - Exit button with hover effect
             Button(action: { dismiss() }) {
                 Text("I'M SAFE - CANCEL EMERGENCY")
                     .font(.headline)
@@ -68,11 +68,11 @@ struct EmergencyIncidentView: View {
                     .background(
                         RoundedRectangle(cornerRadius: 12)
                             .fill(
-                                Color.black.gradient  // Changed to black
+                                Color.black.gradient
                             )
                     )
                     .shadow(
-                        color: Color.black.opacity(0.2),  // Changed shadow to match
+                        color: Color.black.opacity(0.2),
                         radius: 8,
                         y: 4
                     )

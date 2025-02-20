@@ -24,12 +24,6 @@ struct TabBarView: View {
                         Label("Profile", systemImage: "helmet")
                     }
                     .tag(Tab.profile)
-
-                MoreEntryPointView()
-                    .tabItem {
-                        Label("More", systemImage: "ellipsis")
-                    }
-                    .tag(Tab.more)
             }
             .toolbarBackgroundVisibility(.visible, for: .tabBar)
             .toolbarBackground(.accent, for: .tabBar)
