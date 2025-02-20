@@ -40,17 +40,13 @@ struct HomeEntryPointView: View {
                         } label: {
                             CardView(
                                 imageURL: CardView.defaultImageURL,
-                                title: "FAQ",
-                                action: { },
-                                animationDelay: 0.15,
-                                parallaxDelay: 0.75
+                                title: "FAQ"
                             )
                         }
                         
                         CardView(
                             imageURL: "https://images.unsplash.com/photo-1609630875171-b1321377ee65",
                             title: "DISCOVER RIDES",
-                            action: { print("Discover tapped") },
                             animationDelay: 0.3,
                             parallaxDelay: 1.0
                         )

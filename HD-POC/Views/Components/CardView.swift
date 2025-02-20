@@ -3,7 +3,6 @@ import SwiftUI
 struct CardView: View {
     let imageURL: String
     let title: String
-    let action: () -> Void
     
     @State private var imageLoaded = false
     @State private var startParallax = false
@@ -65,16 +64,20 @@ struct CardView: View {
                     .clipped()
                 }
                 
-                // Button overlay
+                // Footer simple sin action
                 VStack {
                     Spacer()
                     HStack {
-                        CustomizedButtonView(title: title, action: action)
+                        Text(title)
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
                     }
-                    .padding(.vertical, 6)
-                    .background(Color.accent)
+                    .background(Color.black)
                 }
             }
+            .contentShape(Rectangle())
             .frame(height: 300)
             .clipShape(RoundedRectangle(cornerRadius: 24))
             .shadow(
@@ -93,7 +96,6 @@ struct CardView: View {
 #Preview {
     CardView(
         imageURL: CardView.defaultImageURL,
-        title: "FAQ",
-        action: { print("FAQ tapped") }
+        title: "FAQ"
     )
 }
