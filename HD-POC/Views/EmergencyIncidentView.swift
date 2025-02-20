@@ -6,37 +6,59 @@ struct EmergencyIncidentView: View {
     @State private var showingEmergencyAlert = false
     @State private var timer: Timer?
     
+    // Animation states
+    @State private var isWarningAnimating = false
+    @State private var isCountdownPulsing = false
+    
     var body: some View {
         VStack(spacing: 24) {
             Spacer()
             
-            // Warning Icon
+            // Warning Icon with scale animation only
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 48))
-                .foregroundColor(.red)
+                .foregroundStyle(
+                    Color.orange.gradient.opacity(isWarningAnimating ? 0.8 : 1)
+                )
+                .scaleEffect(isWarningAnimating ? 1.1 : 1.0)
+                .animation(
+                    .easeInOut(duration: 1)
+                    .repeatForever(autoreverses: true),
+                    value: isWarningAnimating
+                )
             
-            // Main message
+            // Main message with fade in
             Text("Are you alright?")
                 .font(.title.bold())
                 .padding(.bottom, 4)
+                .opacity(isWarningAnimating ? 1 : 0)
+                .animation(.easeIn(duration: 0.5), value: isWarningAnimating)
             
             Text("We've detected you might have been involved in an incident. If you're able to respond, please let us know you're safe.")
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
                 .padding(.horizontal)
+                .opacity(isWarningAnimating ? 1 : 0)
+                .animation(.easeIn(duration: 0.5).delay(0.2), value: isWarningAnimating)
             
-            // Countdown
+            // Countdown with pulse animation
             Text("\(countdown)")
                 .font(.system(size: 72, weight: .bold))
-                .foregroundColor(.red)
+                .foregroundStyle(Color.orange.gradient)
+                .scaleEffect(isCountdownPulsing ? 1.1 : 1.0)
+                .animation(
+                    .easeInOut(duration: 0.5)
+                    .repeatForever(autoreverses: true),
+                    value: isCountdownPulsing
+                )
                 .padding(.vertical)
             
             Text("Automatic emergency response in")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             
-            // Exit button
+            // Exit button with hover effect
             Button(action: { dismiss() }) {
                 Text("I'M SAFE - CANCEL EMERGENCY")
                     .font(.headline)
@@ -45,17 +67,30 @@ struct EmergencyIncidentView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.green)
+                            .fill(
+                                Color.black.gradient  // Changed to black
+                            )
+                    )
+                    .shadow(
+                        color: Color.black.opacity(0.2),  // Changed shadow to match
+                        radius: 8,
+                        y: 4
                     )
             }
             .padding(.horizontal)
             .padding(.top)
+            .scaleEffect(isWarningAnimating ? 1 : 0.95)
+            .animation(.spring(response: 0.5, dampingFraction: 0.7), value: isWarningAnimating)
             
             Spacer()
         }
         .padding()
         .onAppear {
             startCountdown()
+            withAnimation {
+                isWarningAnimating = true
+                isCountdownPulsing = true
+            }
         }
         .onChange(of: countdown) { newValue in
             if newValue == 0 {

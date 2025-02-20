@@ -180,7 +180,7 @@ struct BikeGaugeCluster: View {
         }
         .onAppear {
             // Delay gauge animation (from 5.0 to 1.7)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.7) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.7) {
                 withAnimation(.easeOut(duration: 1.5)) {
                     animateGauges = true
                 }
@@ -228,7 +228,7 @@ struct SpeedometerGauge: View {
         }
         .onAppear {
             // Start after BikeGaugeCluster (from 6.0 to 2.0)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
                 withAnimation(.easeOut(duration: 1.5)) {
                     animatedValue = value
                 }
