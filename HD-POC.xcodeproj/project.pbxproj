@@ -61,26 +61,6 @@
 			);
 			target = B9A0CDCF2D60F80500C95121 /* HD-POC */;
 		};
-		FD7107102D65B492007F8C21 /* Exceptions for "HD-POC" folder in "HD-POC-WidgetExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Views/Components/CardView.swift,
-				Views/Components/CustomizedButtonView.swift,
-				Views/Components/MoreItemView.swift,
-				Views/Components/MyRidesView.swift,
-				Views/Components/ProfileView.swift,
-				Views/Components/SafetyDialogView.swift,
-				Views/DrivingEntryPointView.swift,
-				Views/EmergencyIncidentView.swift,
-				Views/FaqView.swift,
-				Views/HomeEntryPointView.swift,
-				Views/IncidentReportView.swift,
-				Views/MoreEntryPointView.swift,
-				Views/ProfileEntryPointView.swift,
-				Views/TabBarView.swift,
-			);
-			target = A71BDC092D65837800153C5A /* HD-POC-WidgetExtension */;
-		};
 		FD7107172D65BAD7007F8C21 /* Exceptions for "HD-POC-Widget" folder in "HD-POC" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -108,7 +88,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				B94A4C7A2D6299D30053D56A /* Exceptions for "HD-POC" folder in "HD-POC" target */,
-				FD7107102D65B492007F8C21 /* Exceptions for "HD-POC" folder in "HD-POC-WidgetExtension" target */,
 			);
 			path = "HD-POC";
 			sourceTree = "<group>";
