@@ -5,11 +5,13 @@ struct CardView: View {
         ZStack {
             Image("cardImage")
                 .resizable()
-            
+                .aspectRatio(contentMode: .fit)
+                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 8, height: 8)))
+
             VStack {
                 Spacer()
                 HStack {
-                    CustomizedButtonView(title: "my performance", action: myPerformance)
+                    CustomizedButtonView(title: "FAQ", action: myPerformance)
                 }
                 .padding(.vertical, 6)
                 .background(Color.accent)

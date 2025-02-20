@@ -7,11 +7,14 @@
 
 import SwiftUI
 import MapKit
+import SafariServices
 
 public struct DrivingEntryPointView: View {
     @State private var selectedModal: ModalType?
     @State private var timelineScrollOffset: CGFloat = 0
     @State private var showingSafetyDialog = false
+    @State private var showingSoftCollisionDialog = false
+    @State private var showingRoadIncidentDialog = false
     
     // Add these properties for the header
     private let username = "John"
@@ -46,10 +49,35 @@ public struct DrivingEntryPointView: View {
             VStack {
                 HStack {
                     Spacer()
-                    FloatingSafetyButton(showingSafetyDialog: $showingSafetyDialog)
-                        .padding(.top, 8)
-                        .padding(.trailing, 16)
+                    // Soft Collision Button
+                    Button(action: { showingSoftCollisionDialog = true }) {
+                        Image(systemName: "motorcycle.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.black)
+                            .frame(width: 44, height: 44)
+                            .background(
+                                Circle()
+                                    .fill(Color.yellow)
+                                    .shadow(radius: 2)
+                            )
+                    }
+                    .padding(.trailing, 8)
+                    
+                    // Road Incident Button
+                    Button(action: { showingRoadIncidentDialog = true }) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.white)
+                            .frame(width: 44, height: 44)
+                            .background(
+                                Circle()
+                                    .fill(Color.red)
+                                    .shadow(radius: 2)
+                            )
+                    }
+                    .padding(.trailing, 16)
                 }
+                .padding(.top, 8)
                 Spacer()
                 
                 NavigationBar(selectedModal: $selectedModal)
@@ -63,8 +91,11 @@ public struct DrivingEntryPointView: View {
                 RideRewardsView()
             }
         }
-        .sheet(isPresented: $showingSafetyDialog) {
-            SafetyDialogView()
+        .sheet(isPresented: $showingSoftCollisionDialog) {
+            IncidentReportView()
+        }
+        .sheet(isPresented: $showingRoadIncidentDialog) {
+            EmergencyIncidentView()
         }
     }
 }
@@ -1218,7 +1249,7 @@ private struct ChallengeCard: View {
     }
 }
 
-private struct FloatingSafetyButton: View {
+struct FloatingSafetyButton: View {
     @Binding var showingSafetyDialog: Bool
     
     var body: some View {
@@ -1243,83 +1274,7 @@ private struct FloatingSafetyButton: View {
     }
 }
 
-struct SafetyDialogView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var currentMessageIndex = 0
-    @State private var isAnimating = false
-    
-    let conversation: [(speaker: String, message: String)] = [
-        ("You", "Hey HD, I need to contact insurance assistance."),
-        ("HD", "I'll connect you with our insurance service right away."),
-        ("HD", "Connecting to HD Insurance Services..."),
-        ("Agent", "Hello, this is Sarah from HD Insurance. How can I help you today?"),
-        ("You", "Hi, I've had a minor incident with my bike."),
-        ("Agent", "I understand. First, could you confirm your full name?"),
-        ("You", "John Smith"),
-        ("Agent", "Thank you, John. Could you provide your insurance policy number?"),
-        ("You", "Yes, it's HD-2024-789456"),
-        ("Agent", "Perfect, I've located your policy. Are you in a safe location?"),
-        ("You", "Yes, I'm safely off the road."),
-        ("Agent", "Good. I can see your location. Do you need roadside assistance?"),
-        ("You", "Yes, please."),
-        ("Agent", "I'm dispatching a tow service to your location. ETA 20 minutes."),
-        ("Agent", "Would you like me to arrange a replacement vehicle?"),
-        ("You", "No thanks, I have alternative transportation."),
-        ("Agent", "Alright. You'll receive an SMS with the tow service details."),
-        ("HD", "I've saved this incident report to your account.")
-    ]
-    
-    var body: some View {
-        ZStack {
-            VStack(spacing: 24) {
-                Color.clear.frame(height: 30) // Changed from 60 to 30
-                
-                // Voice wave animation
-                WaveformView(isAnimating: $isAnimating)
-                    .frame(height: 60)
-                
-                // Conversation
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            ForEach(0...currentMessageIndex, id: \.self) { index in
-                                MessageBubble(
-                                    message: conversation[index].message,
-                                    isHD: conversation[index].speaker == "HD" || conversation[index].speaker == "Agent"
-                                )
-                            }
-                        }
-                        .padding()
-                    }
-                    .onChange(of: currentMessageIndex) { _ in
-                        withAnimation {
-                            proxy.scrollTo(currentMessageIndex)
-                        }
-                    }
-                }
-                
-                Spacer()
-            }
-            
-            CloseButton()
-        }
-        .onAppear {
-            isAnimating = true
-            animateConversation()
-        }
-    }
-    
-    private func animateConversation() {
-        guard currentMessageIndex < conversation.count - 1 else { return }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            currentMessageIndex += 1
-            animateConversation()
-        }
-    }
-}
-
-private struct WaveformView: View {
+struct WaveformView: View {
     @Binding var isAnimating: Bool
     
     var body: some View {
@@ -1342,21 +1297,44 @@ private struct WaveformView: View {
     private let heights: [CGFloat] = [20, 40, 30, 50, 25, 45, 35, 40, 30, 20]
 }
 
-private struct MessageBubble: View {
+struct MessageBubble: View {
     let message: String
     let isHD: Bool
+    let showingSafari: Binding<Bool>?
     
     var body: some View {
         HStack {
             if isHD { Spacer() }
             
-            Text(message)
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(isHD ? Color.black.opacity(0.05) : Color.orange)
-                )
-                .foregroundColor(isHD ? .primary : .white)
+            VStack(alignment: isHD ? .trailing : .leading, spacing: 4) {
+                if message.contains("📎") {
+                    Text(message.split(separator: "\n\n")[0])
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(isHD ? Color.black.opacity(0.05) : Color.orange)
+                        )
+                        .foregroundColor(isHD ? .primary : .white)
+                    
+                    Button(action: {
+                        showingSafari?.wrappedValue = true
+                    }) {
+                        Text("📎 Policy_Details.pdf")
+                            .underline()
+                            .padding(.horizontal)
+                            .padding(.vertical, 4)
+                    }
+                    .foregroundColor(.orange)
+                } else {
+                    Text(message)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(isHD ? Color.black.opacity(0.05) : Color.orange)
+                        )
+                        .foregroundColor(isHD ? .primary : .white)
+                }
+            }
             
             if !isHD { Spacer() }
         }
@@ -1420,6 +1398,18 @@ struct CloseButton: View {
             
             Spacer()
         }
+    }
+}
+
+// Add Safari view
+struct SafariView: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<SafariView>) -> SFSafariViewController {
+        return SFSafariViewController(url: url)
+    }
+
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: UIViewControllerRepresentableContext<SafariView>) {
     }
 }
 
