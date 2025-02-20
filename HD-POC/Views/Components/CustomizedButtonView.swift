@@ -8,13 +8,13 @@ struct CustomizedButtonView: View {
     var body: some View {
         Button {
             action()
-            if title == "my performance" {
+            if title.uppercased() == "FAQ" {
                 router.isFaqVisible = true
             }
         } label: {
             HStack {
                 Spacer()
-                Text(title.capitalized)
+                Text(title.uppercased())
                 
                 Image(systemName: "arrow.right")
                 Spacer()

@@ -1,30 +1,99 @@
 import SwiftUI
 
 struct CardView: View {
+    let imageURL: String
+    let title: String
+    let action: () -> Void
+    
+    @State private var imageLoaded = false
+    @State private var startParallax = false
+    
+    var animationDelay: Double = 0
+    var parallaxDelay: Double = 3
+    
+    // Example HD image from Unsplash
+    static let defaultImageURL = "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800"
+    
     var body: some View {
-        ZStack {
-            Image("cardImage")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 8, height: 8)))
-
-            VStack {
-                Spacer()
-                HStack {
-                    CustomizedButtonView(title: "FAQ", action: myPerformance)
+        VStack {
+            ZStack {
+                // Container to constrain image size
+                GeometryReader { geo in
+                    AsyncImage(url: URL(string: imageURL)) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .scaleEffect(1.5)
+                                .tint(.accent)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: geo.size.width, height: geo.size.height)
+                                .scaleEffect(1.1)
+                                .offset(y: startParallax ? -10 : 0)
+                                .opacity(imageLoaded ? 1 : 0)
+                                .animation(.easeOut(duration: 0.8), value: imageLoaded)
+                                .animation(
+                                    .easeInOut(duration: 3)
+                                    .repeatForever(autoreverses: true),
+                                    value: startParallax
+                                )
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + animationDelay) {
+                                        withAnimation {
+                                            imageLoaded = true
+                                        }
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + (animationDelay + parallaxDelay)) {
+                                        startParallax = true
+                                    }
+                                }
+                        
+                        case .failure(_):
+                            Image(systemName: "photo.fill")
+                                .font(.largeTitle)
+                                .foregroundColor(.gray)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                    .clipped()
                 }
-                .padding(.vertical, 6)
-                .background(Color.accent)
+                
+                // Button overlay
+                VStack {
+                    Spacer()
+                    HStack {
+                        CustomizedButtonView(title: title, action: action)
+                    }
+                    .padding(.vertical, 6)
+                    .background(Color.accent)
+                }
             }
+            .frame(height: 300)
+            .clipShape(RoundedRectangle(cornerRadius: 24))
+            .shadow(
+                color: .black.opacity(0.2),
+                radius: 10,
+                x: 0,
+                y: 5
+            )
         }
-        .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal, 20)
         .padding(.top, 20)
-        .frame(height: 300)
-        .shadow(color: .text, radius: 2)
     }
 }
 
+// Preview with example URL
 #Preview {
-    CardView()
+    CardView(
+        imageURL: CardView.defaultImageURL,
+        title: "FAQ",
+        action: { print("FAQ tapped") }
+    )
 }
