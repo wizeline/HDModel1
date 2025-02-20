@@ -1403,7 +1403,7 @@ private struct UserHeaderView: View {
 }
 
 // First, let's create a reusable close button
-private struct CloseButton: View {
+struct CloseButton: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
