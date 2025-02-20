@@ -1,10 +1,3 @@
-//
-//  HD_POCApp.swift
-//  HD-POC
-//
-//  Created by Kelderth Krom on 15/02/25.
-//
-
 import SwiftUI
 
 @main
