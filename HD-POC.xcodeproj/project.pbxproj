@@ -64,10 +64,20 @@
 		FD7107102D65B492007F8C21 /* Exceptions for "HD-POC" folder in "HD-POC-WidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Views/Components/CardView.swift,
+				Views/Components/CustomizedButtonView.swift,
+				Views/Components/MoreItemView.swift,
+				Views/Components/MyRidesView.swift,
+				Views/Components/ProfileView.swift,
 				Views/Components/SafetyDialogView.swift,
 				Views/DrivingEntryPointView.swift,
 				Views/EmergencyIncidentView.swift,
+				Views/FaqView.swift,
+				Views/HomeEntryPointView.swift,
 				Views/IncidentReportView.swift,
+				Views/MoreEntryPointView.swift,
+				Views/ProfileEntryPointView.swift,
+				Views/TabBarView.swift,
 			);
 			target = A71BDC092D65837800153C5A /* HD-POC-WidgetExtension */;
 		};
