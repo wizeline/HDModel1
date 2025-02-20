@@ -43,6 +43,7 @@
 		A71BDC0D2D65837800153C5A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B94A4C912D6386C50053D56A /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		B9A0CDD02D60F80500C95121 /* HD-POC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HD-POC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD7107642D65BCD4007F8C21 /* HD-POC-WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "HD-POC-WidgetExtension.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -60,12 +61,31 @@
 			);
 			target = B9A0CDCF2D60F80500C95121 /* HD-POC */;
 		};
+		FD7107102D65B492007F8C21 /* Exceptions for "HD-POC" folder in "HD-POC-WidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/DrivingEntryPointView.swift,
+			);
+			target = A71BDC092D65837800153C5A /* HD-POC-WidgetExtension */;
+		};
+		FD7107172D65BAD7007F8C21 /* Exceptions for "HD-POC-Widget" folder in "HD-POC" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppIntent.swift,
+				Assets.xcassets,
+				HD_POC_Widget.swift,
+				HD_POC_WidgetControl.swift,
+				HD_POC_WidgetLiveActivity.swift,
+			);
+			target = B9A0CDCF2D60F80500C95121 /* HD-POC */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A71BDC0F2D65837800153C5A /* HD-POC-Widget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				FD7107172D65BAD7007F8C21 /* Exceptions for "HD-POC-Widget" folder in "HD-POC" target */,
 				A71BDC242D65837900153C5A /* Exceptions for "HD-POC-Widget" folder in "HD-POC-WidgetExtension" target */,
 			);
 			path = "HD-POC-Widget";
@@ -75,6 +95,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				B94A4C7A2D6299D30053D56A /* Exceptions for "HD-POC" folder in "HD-POC" target */,
+				FD7107102D65B492007F8C21 /* Exceptions for "HD-POC" folder in "HD-POC-WidgetExtension" target */,
 			);
 			path = "HD-POC";
 			sourceTree = "<group>";
@@ -115,6 +136,7 @@
 		B9A0CDC72D60F80500C95121 = {
 			isa = PBXGroup;
 			children = (
+				FD7107642D65BCD4007F8C21 /* HD-POC-WidgetExtension.entitlements */,
 				B9A0CDD22D60F80500C95121 /* HD-POC */,
 				A71BDC0F2D65837800153C5A /* HD-POC-Widget */,
 				B94A4C902D6386C50053D56A /* Frameworks */,
@@ -266,9 +288,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "HD-POC-WidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6G6VB68MDA;
+				DEVELOPMENT_TEAM = 9633N8XUM3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HD-POC-Widget/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "HD-POC-Widget";
@@ -279,7 +302,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC.HD-POC-Widget";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC.HD-POC-Widget2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -293,9 +316,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "HD-POC-WidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6G6VB68MDA;
+				DEVELOPMENT_TEAM = 9633N8XUM3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HD-POC-Widget/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "HD-POC-Widget";
@@ -306,7 +330,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC.HD-POC-Widget";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC.HD-POC-Widget2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -439,10 +463,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_ENTITLEMENTS = "HD-POC/HD-POC.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HD-POC/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9633N8XUM3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HD-POC/Info.plist";
@@ -456,7 +482,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC.demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -470,10 +496,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_ENTITLEMENTS = "HD-POC/HD-POC.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HD-POC/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9633N8XUM3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HD-POC/Info.plist";
@@ -487,7 +515,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Kelderth.HD-POC.demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

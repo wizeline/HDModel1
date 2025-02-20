@@ -1243,7 +1243,7 @@ private struct FloatingSafetyButton: View {
     }
 }
 
-private struct SafetyDialogView: View {
+struct SafetyDialogView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var currentMessageIndex = 0
     @State private var isAnimating = false
