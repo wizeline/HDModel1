@@ -3,7 +3,8 @@ import SwiftUI
 struct TabBarView: View {
     @StateObject var router = NavigationRouter.shared
     @State private var showingSafetyAssistant = false
-    
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
         TabView(selection: $router.selectedTab) {
             Group {
@@ -25,10 +26,13 @@ struct TabBarView: View {
                     }
                     .tag(Tab.profile)
             }
-            .toolbarBackgroundVisibility(.visible, for: .tabBar)
-            .toolbarBackground(.accent, for: .tabBar)
         }
         .tint(.orange)
+        .toolbarBackground(
+            colorScheme == .dark ? Color.black : Color.white,
+            for: .tabBar
+        )
+        .toolbarBackgroundVisibility(.visible, for: .tabBar)
         .sheet(isPresented: $showingSafetyAssistant) {
             SafetyDialogView()
         }

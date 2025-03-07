@@ -6,7 +6,7 @@ struct Constants {
         ("You", "Hey HD, I need to contact insurance assistance."),
         ("HD", "I'll connect you with our insurance service right away."),
         ("HD", "Connecting to HD Insurance Services..."),
-        ("Agent", "Hello, this is Sarah from HD Insurance. How can I help you today?"),
+        ("Agent", "Hello, this is William. How can I help you today?"),
         ("You", "Hi, I've had a minor incident with my bike."),
         ("Agent", "I understand. First, could you confirm your full name?"),
         ("You", "John Smith"),
